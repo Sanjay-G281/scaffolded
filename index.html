@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LensVault — Visual Explorer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Branded Header -->
+  <header class="app-header">
+    <h1>LensVault</h1>
+    <p class="tagline">Explore curated high-resolution imagery instantly.</p>
+  </header>
+
+  <main class="container">
+    <!-- Search Form -->
+    <form id="search-form" class="search-form">
+      <label for="search-input" class="sr-only">Search images</label>
+      <input 
+        type="search" 
+        id="search-input" 
+        placeholder="Search topics (e.g. Cyberpunk, Architecture)..." 
+      />
+      <button type="submit" id="search-btn">Search</button>
+    </form>
+
+    <!-- Extra Feature 1: Category Chips -->
+    <div id="quick-picks" class="quick-picks">
+      <button class="chip">Nature</button>
+      <button class="chip">Architecture</button>
+      <button class="chip">Cyberpunk</button>
+      <button class="chip">Minimalism</button>
+    </div>
+
+    <!-- Extra Feature 2: Empty-state Message -->
+    <p id="empty-state" class="empty-state">
+      Type a query above or click a suggestion chip to start searching.
+    </p>
+
+    <!-- Results Grid -->
+    <section id="results" class="results-grid"></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
