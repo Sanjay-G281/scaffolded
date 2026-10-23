@@ -18,7 +18,7 @@ searchForm.addEventListener("submit", (event) => {
   fetchAndRenderImages(query);
 });
 
-// Task 5 (Enhancement): Handle Category / Quick-Pick chip clicks
+// Category / Quick-Pick chip clicks
 if (quickPicksContainer) {
   quickPicksContainer.addEventListener("click", (event) => {
     if (event.target.classList.contains("chip")) {
@@ -38,17 +38,24 @@ async function fetchAndRenderImages(query) {
     "&gsrsearch=" + encodeURIComponent(query) +
     "&gsrnamespace=6&gsrlimit=12&prop=imageinfo&iiprop=url&iiurlwidth=300&format=json&origin=*";
 
+  // Task 1: Loading State (Set status BEFORE fetching)
+  resultsContainer.innerHTML = "";
+  if (emptyState) {
+    emptyState.style.display = "block";
+    emptyState.textContent = `Searching for "${query}"...`;
+  }
+
   try {
     const response = await fetch(url);
 
-    // Task 2: Check if response is ok
+    // Task 3: Check response.ok
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
 
-    // Check if query returned any results
+    // Task 2: Empty State Check (No results found)
     if (!data.query || !data.query.pages) {
       renderNoResults(query);
       return;
@@ -58,10 +65,12 @@ async function fetchAndRenderImages(query) {
     renderCards(items, query);
 
   } catch (error) {
+    // Task 3: Error State (Network failure or broken request)
     console.error("Error fetching images:", error);
+    resultsContainer.innerHTML = "";
     if (emptyState) {
       emptyState.style.display = "block";
-      emptyState.textContent = "An error occurred while fetching images. Please try again.";
+      emptyState.textContent = "Something went wrong. Please try again.";
     }
   }
 }
@@ -71,7 +80,7 @@ function renderCards(items, query) {
   // Clear previous search results
   resultsContainer.innerHTML = "";
 
-  // Hide or update empty-state message
+  // Task 4 (Polish): Update result count message
   if (emptyState) {
     emptyState.style.display = "block";
     emptyState.textContent = `Showing ${items.length} results for "${query}"`;
@@ -93,7 +102,7 @@ function renderCards(items, query) {
     const caption = document.createElement("p");
     caption.textContent = item.title.replace(/^File:/, "");
 
-    // Enhancement: Click image card to open full image in new tab
+    // Click image card to open full image in new tab
     if (imageInfo && imageInfo.url) {
       const link = document.createElement("a");
       link.href = imageInfo.url;
@@ -110,7 +119,7 @@ function renderCards(items, query) {
   });
 }
 
-// Helper function for zero-result queries
+// Helper function for zero-result queries (Empty State)
 function renderNoResults(query) {
   resultsContainer.innerHTML = "";
   if (emptyState) {
